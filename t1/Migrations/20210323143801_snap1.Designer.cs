@@ -10,14 +10,13 @@ using t1.Models;
 namespace t1.Migrations
 {
     [DbContext(typeof(TtDbContext))]
-    [Migration("20210322224430_snap1")]
+    [Migration("20210323143801_snap1")]
     partial class snap1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
@@ -125,11 +124,13 @@ namespace t1.Migrations
 
             modelBuilder.Entity("t1.Models.Department", b =>
                 {
-                    b.Property<long>("DepartmentId")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("DepartmentId")
                         .HasColumnType("bigint")
-                        .HasColumnName("department_id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("department_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -141,7 +142,7 @@ namespace t1.Migrations
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("DepartmentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -299,9 +300,11 @@ namespace t1.Migrations
 
             modelBuilder.Entity("t1.Models.Department", b =>
                 {
-                    b.HasOne("t1.Models.User", null)
+                    b.HasOne("t1.Models.User", "User")
                         .WithMany("Departments")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("t1.Models.User", b =>

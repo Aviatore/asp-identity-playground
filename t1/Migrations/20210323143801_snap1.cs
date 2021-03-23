@@ -53,7 +53,8 @@ namespace t1.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "serial", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
@@ -73,7 +74,8 @@ namespace t1.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "serial", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
@@ -157,13 +159,14 @@ namespace t1.Migrations
                 name: "Department",
                 columns: table => new
                 {
-                    department_id = table.Column<long>(type: "serial", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    department_id = table.Column<long>(type: "bigint", nullable: false),
                     name = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Department", x => x.department_id);
+                    table.PrimaryKey("PK_Department", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Department_AspNetUsers_UserId",
                         column: x => x.UserId,
