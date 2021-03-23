@@ -11,7 +11,7 @@ namespace t1.Models
             
         }
 
-        public virtual DbSet<Department> Type { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
